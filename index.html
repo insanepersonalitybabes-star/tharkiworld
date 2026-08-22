@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THARKI WORLD — Yalla Ludo Room Community</title>
+<meta name="description" content="THARKI WORLD — a fan-made community home for the Yalla Ludo room. Room ID 21178301040. Where the game begins. Where the people stay.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800;900&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   THARKI WORLD — design system
+   ============================================================ */
+:root{
+  --ink:#0B0812;
+  --ink-2:#120D1E;
+  --panel:#171024;
+  --panel-2:#1D1430;
+  --cream:#F4ECDD;
+  --muted:#A79FB8;
+  --faint:#6F6685;
+  --gold:#E7B45A;
+  --gold-deep:#B8822F;
+  --red:#E0504E;
+  --green:#3FB984;
+  --blue:#5B8DEF;
+  --yellow:#EDC24C;
+  --line:rgba(244,236,221,.09);
+  --line-gold:rgba(231,180,90,.28);
+  --r-card:16px;
+  --r-btn:12px;
+  --font-display:'Unbounded',sans-serif;
+  --font-body:'Manrope',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  --ease:cubic-bezier(.22,.75,.2,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+html,body{overflow-x:clip}
+body{
+  background:var(--ink);
+  color:var(--cream);
+  font-family:var(--font-body);
+  font-size:16px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--gold);color:var(--ink)}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+::-webkit-scrollbar{width:10px}
+::-webkit-scrollbar-track{background:var(--ink)}
+::-webkit-scrollbar-thumb{background:#2A2140;border-radius:8px;border:2px solid var(--ink)}
+::-webkit-scrollbar-thumb:hover{background:var(--gold-deep)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:4px}
+
+/* ---------- layered ambient background ---------- */
+.bg-layers{position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:
+    radial-gradient(900px 600px at 12% -5%,rgba(231,180,90,.10),transparent 60%),
+    radial-gradient(800px 700px at 92% 8%,rgba(224,80,78,.08),transparent 60%),
+    radial-gradient(1000px 800px at 50% 115%,rgba(91,141,239,.07),transparent 60%),
+    linear-gradient(180deg,#0D0916 0%,var(--ink) 40%,#0A0711 100%);
+}
+.bg-grid{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.35;
+  background-image:linear-gradient(rgba(244,236,221,.025) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(244,236,221,.025) 1px,transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(ellipse 90% 70% at 50% 30%,#000 20%,transparent 80%);
+  -webkit-mask-image:radial-gradient(ellipse 90% 70% at 50% 30%,#000 20%,transparent 80%);
+}
+.noise{position:fixed;inset:-50%;z-index:60;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grain 9s steps(6) infinite;
+}
+@keyframes grain{0%,100%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}60%{transform:translate(-2%,-2%)}80%{transform:translate(3%,2%)}}
+
+/* ---------- typography helpers ---------- */
+.kicker{font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:.34em;text-transform:uppercase;color:var(--gold);display:inline-flex;align-items:center;gap:12px}
+.kicker::before{content:"";width:34px;height:1px;background:linear-gradient(90deg,var(--gold),transparent)}
+.sec-title{font-family:var(--font-display);font-weight:800;font-size:clamp(1.9rem,4.6vw,3.4rem);line-height:1.08;letter-spacing:-.01em;text-transform:uppercase}
+.sec-sub{color:var(--muted);max-width:56ch;margin-top:14px;font-size:clamp(.98rem,1.4vw,1.08rem)}
+.mono{font-family:var(--font-mono)}
+.wrap{width:min(1180px,92%);margin:0 auto}
+section{padding:clamp(72px,9vw,130px) 0;position:relative}
+.sec-head{margin-bottom:clamp(36px,5vw,60px)}
+.sec-divider{display:flex;justify-content:center;padding:6px 0}
+.sec-divider span{color:var(--gold);opacity:.55;font-size:13px;letter-spacing:.6em}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:var(--font-display);font-weight:700;font-size:13px;letter-spacing:.09em;text-transform:uppercase;padding:16px 28px;border-radius:var(--r-btn);transition:transform .3s var(--ease),box-shadow .3s var(--ease),background .3s,color .3s,border-color .3s;position:relative;overflow:hidden;white-space:nowrap}
+.btn svg{width:16px;height:16px;flex:none}
+.btn:active{transform:scale(.97)}
+.btn-gold{background:linear-gradient(160deg,#F2C76E,var(--gold) 45%,#C98F35);color:#1D1206;box-shadow:0 8px 28px -8px rgba(231,180,90,.5),inset 0 1px 0 rgba(255,255,255,.35)}
+.btn-gold::after{content:"";position:absolute;top:0;left:-80%;width:50%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);transform:skewX(-20deg);transition:left .6s var(--ease)}
+.btn-gold:hover{transform:translateY(-3px);box-shadow:0 16px 36px -8px rgba(231,180,90,.6)}
+.btn-gold:hover::after{left:130%}
+.btn-ghost{border:1px solid var(--line-gold);color:var(--cream);background:rgba(231,180,90,.05)}
+.btn-ghost:hover{background:rgba(231,180,90,.14);border-color:var(--gold);transform:translateY(-3px)}
+
+/* ---------- reveal system ---------- */
+.rv{opacity:0;transform:translateY(28px);filter:blur(6px);transition:opacity .9s var(--ease),transform .9s var(--ease),filter .9s var(--ease)}
+.rv.in{opacity:1;transform:none;filter:none}
+.rv-l{transform:translateX(-36px)}
+.rv-r{transform:translateX(36px)}
+.rv-sc{transform:scale(.92)}
+
+/* ---------- preloader ---------- */
+#loader{position:fixed;inset:0;z-index:200;background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;transition:opacity .6s ease,visibility .6s}
+#loader.done{opacity:0;visibility:hidden}
+.ldr-tw{width:76px;height:76px;display:grid;place-items:center;border:1px solid var(--line-gold);transform:rotate(45deg);border-radius:14px;animation:ldrIn .7s var(--ease) both}
+.ldr-tw b{transform:rotate(-45deg);font-family:var(--font-display);font-weight:800;font-size:24px;color:var(--gold)}
+.ldr-name{display:flex;gap:2px;font-family:var(--font-display);font-weight:700;font-size:clamp(15px,3vw,22px);letter-spacing:.32em;text-transform:uppercase;color:var(--cream)}
+.ldr-name span{opacity:0;animation:ldrChar .5s var(--ease) forwards;animation-delay:calc(.35s + var(--i)*.045s)}
+@keyframes ldrIn{from{opacity:0;transform:rotate(45deg) scale(.6)}to{opacity:1;transform:rotate(45deg) scale(1)}}
+@keyframes ldrChar{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.ldr-bar{width:120px;height:2px;background:rgba(244,236,221,.1);overflow:hidden;border-radius:2px}
+.ldr-bar i{display:block;height:100%;width:100%;background:var(--gold);transform-origin:left;animation:ldrBar 1.3s var(--ease) forwards}
+@keyframes ldrBar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+/* ---------- custom cursor ---------- */
+.cur-dot,.cur-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:190;border-radius:50%;display:none}
+body.has-cursor .cur-dot,body.has-cursor .cur-ring{display:block}
+body.has-cursor,body.has-cursor a,body.has-cursor button{cursor:none}
+.cur-dot{width:6px;height:6px;background:var(--gold);transform:translate(-50%,-50%)}
+.cur-ring{width:34px;height:34px;border:1px solid rgba(231,180,90,.55);transform:translate(-50%,-50%);transition:width .25s,height .25s,border-color .25s,background .25s}
+.cur-ring.big{width:56px;height:56px;border-color:var(--gold);background:rgba(231,180,90,.08)}
+
+/* ---------- nav ---------- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:120;transition:background .35s,border-color .35s,backdrop-filter .35s;border-bottom:1px solid transparent}
+.nav.scrolled{background:rgba(11,8,18,.82);backdrop-filter:blur(14px);border-color:var(--line)}
+.nav-in{width:min(1240px,94%);margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:74px;gap:20px}
+.brand{display:flex;align-items:center;gap:13px}
+.brand-mark{width:40px;height:40px;flex:none;display:grid;place-items:center;border:1px solid var(--line-gold);border-radius:10px;transform:rotate(45deg);background:linear-gradient(140deg,rgba(231,180,90,.18),rgba(231,180,90,.03))}
+.brand-mark b{transform:rotate(-45deg);font-family:var(--font-display);font-size:13px;font-weight:800;color:var(--gold)}
+.brand-txt{line-height:1.15}
+.brand-txt b{font-family:var(--font-display);font-size:12.5px;font-weight:800;letter-spacing:.14em;display:block}
+.brand-txt small{font-family:var(--font-mono);font-size:9px;letter-spacing:.3em;color:var(--faint);text-transform:uppercase}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{font-size:12.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);position:relative;padding:6px 0;transition:color .3s}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1.5px;background:var(--gold);transform:scaleX(0);transform-origin:right;transition:transform .35s var(--ease)}
+.nav-links a:hover{color:var(--cream)}
+.nav-links a:hover::after{transform:scaleX(1);transform-origin:left}
+.nav-cta{display:flex;align-items:center;gap:14px}
+.nav .btn{padding:12px 20px;font-size:11px}
+.nav-progress{position:absolute;bottom:-1px;left:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--red));width:0%}
+.burger{display:none;width:44px;height:44px;flex-direction:column;align-items:center;justify-content:center;gap:6px;border:1px solid var(--line);border-radius:10px}
+.burger span{width:20px;height:2px;background:var(--cream);transition:transform .35s var(--ease),opacity .3s;display:block}
+.burger.open span:nth-child(1){transform:translateY(8px) rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0}
+.burger.open span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+.m-menu{position:fixed;inset:0;z-index:110;background:rgba(11,8,18,.97);backdrop-filter:blur(16px);display:flex;flex-direction:column;justify-content:center;padding:100px 8% 40px;gap:8px;opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s}
+.m-menu.open{opacity:1;visibility:visible}
+.m-menu a{font-family:var(--font-display);font-size:clamp(26px,7vw,40px);font-weight:800;text-transform:uppercase;letter-spacing:.02em;padding:10px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;opacity:0;transform:translateY(24px);transition:opacity .5s var(--ease),transform .5s var(--ease),color .3s}
+.m-menu.open a{opacity:1;transform:none;transition-delay:calc(.08s + var(--i)*.06s)}
+.m-menu a small{font-family:var(--font-mono);font-size:11px;color:var(--gold)}
+.m-menu a:hover{color:var(--gold)}
+.m-menu-foot{margin-top:28px;display:flex;flex-direction:column;gap:14px}
+
+/* ---------- hero ---------- */
+.hero{min-height:100svh;display:flex;align-items:center;padding:130px 0 90px;position:relative}
+.hero-glow{position:absolute;top:-10%;left:-15%;width:70%;height:80%;background:radial-gradient(closest-side,rgba(231,180,90,.13),transparent);pointer-events:none;animation:breathe 7s ease-in-out infinite}
+.hero-glow.two{left:auto;right:-20%;top:30%;background:radial-gradient(closest-side,rgba(224,80,78,.10),transparent);animation-delay:-3s}
+@keyframes breathe{0%,100%{opacity:.7;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
+.hero-grid{width:min(1280px,93%);margin:0 auto;display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(30px,4vw,70px);align-items:center;position:relative}
+#heroParticles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+#heroParticles i{position:absolute;border-radius:50%;animation:floatUp linear infinite;opacity:0}
+@keyframes floatUp{0%{transform:translateY(30px);opacity:0}12%{opacity:var(--o)}88%{opacity:var(--o)}100%{transform:translateY(-78vh);opacity:0}}
+
+.badge-pill{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line-gold);border-radius:100px;padding:9px 18px;font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);background:rgba(231,180,90,.06)}
+.badge-pill svg{width:14px;height:14px}
+.hero-title{font-family:var(--font-display);font-weight:900;font-size:clamp(2.7rem,8.2vw,6.6rem);line-height:.98;text-transform:uppercase;letter-spacing:-.01em;margin:26px 0 22px}
+.hero-title .t1{display:block;color:var(--cream);text-shadow:0 4px 40px rgba(244,236,221,.12)}
+.hero-title .t2{display:block;color:var(--gold);text-shadow:0 6px 50px rgba(231,180,90,.35)}
+.hero-tag{color:var(--muted);font-size:clamp(1rem,1.6vw,1.2rem);max-width:46ch}
+.hero-tag b{color:var(--cream);font-weight:600}
+.hero-idrow{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin:30px 0 14px}
+.id-chip{display:inline-flex;align-items:center;gap:12px;border:1px solid var(--line);background:rgba(23,16,36,.7);border-radius:12px;padding:11px 16px}
+.id-chip .lbl{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.28em;color:var(--faint);text-transform:uppercase}
+.id-chip .val{font-family:var(--font-mono);font-size:15px;font-weight:700;color:var(--cream);letter-spacing:.06em}
+.status-pill{display:inline-flex;align-items:center;gap:10px;border-radius:100px;padding:10px 18px;border:1px solid rgba(63,185,132,.35);background:rgba(63,185,132,.08);font-family:var(--font-mono);font-size:10.5px;font-weight:700;letter-spacing:.24em;color:#8CE6BF;text-transform:uppercase}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--green);position:relative;flex:none}
+.dot::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:1px solid var(--green);animation:pulse 1.8s ease-out infinite}
+@keyframes pulse{0%{transform:scale(.6);opacity:1}100%{transform:scale(1.8);opacity:0}}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:16px;margin-top:30px}
+.hero-foot{margin-top:34px;display:flex;align-items:center;gap:12px;font-family:var(--font-mono);font-size:10px;letter-spacing:.26em;color:var(--faint);text-transform:uppercase}
+.hero-foot i{width:1px;height:26px;background:var(--line-gold);animation:scrollHint 2s var(--ease) infinite}
+@keyframes scrollHint{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* hero visual — the board emblem */
+.hero-visual{position:relative;display:grid;place-items:center;min-height:440px;perspective:1300px}
+.board-stage{position:relative;width:min(460px,88%);aspect-ratio:1;transform-style:preserve-3d;will-change:transform}
+.board-glow{position:absolute;inset:-18%;background:radial-gradient(closest-side,rgba(231,180,90,.16),transparent 70%);filter:blur(6px)}
+.board-svg{width:100%;height:100%;filter:drop-shadow(0 30px 60px rgba(0,0,0,.55))}
+.board-ring{position:absolute;inset:-9%;border:1px dashed rgba(231,180,90,.22);border-radius:50%;animation:spin 60s linear infinite}
+.board-ring.two{inset:-16%;border-color:rgba(244,236,221,.07);animation-duration:90s;animation-direction:reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.chip-float{position:absolute;display:flex;align-items:center;gap:9px;background:rgba(19,13,31,.9);border:1px solid var(--line-gold);border-radius:12px;padding:10px 15px;font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:.14em;color:var(--cream);box-shadow:0 14px 34px -10px rgba(0,0,0,.6);animation:bob 5s ease-in-out infinite;white-space:nowrap}
+.chip-float svg{width:14px;height:14px;color:var(--gold)}
+.chip-float .dot{width:7px;height:7px}
+.chip-a{top:2%;right:-4%;animation-delay:-1s}
+.chip-b{bottom:10%;left:-7%;animation-delay:-2.5s}
+.chip-c{top:38%;right:-11%;animation-delay:-4s;color:var(--gold)}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.die-holder{position:absolute;bottom:-4%;right:2%;animation:bob 6s ease-in-out infinite;animation-delay:-2s}
+/* 3D dice */
+.die-scene{width:74px;height:74px;perspective:600px}
+.die{width:100%;height:100%;position:relative;transform-style:preserve-3d;animation:roll 10s ease-in-out infinite}
+@keyframes roll{
+  0%,14%{transform:rotateX(-16deg) rotateY(14deg)}
+  22%,32%{transform:rotateX(-90deg) rotateY(0deg)}
+  40%,52%{transform:rotateX(0deg) rotateY(-90deg)}
+  60%,72%{transform:rotateX(0deg) rotateY(-180deg)}
+  80%,92%{transform:rotateX(0deg) rotateY(-270deg)}
+  100%{transform:rotateX(-16deg) rotateY(-346deg)}
+}
+.die .f{position:absolute;inset:0;background:linear-gradient(150deg,#FBF3E0,#E3D5B4);border:1px solid #B49B6C;border-radius:13px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:11px;backface-visibility:hidden}
+.die .p{width:9px;height:9px;background:#241A0C;border-radius:50%;place-self:center}
+.f1{transform:translateZ(37px)}
+.f6{transform:rotateY(180deg) translateZ(37px)}
+.f3{transform:rotateY(90deg) translateZ(37px)}
+.f4{transform:rotateY(-90deg) translateZ(37px)}
+.f5{transform:rotateX(90deg) translateZ(37px)}
+.f2{transform:rotateX(-90deg) translateZ(37px)}
+
+/* ---------- ticker ---------- */
+.ticker{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(23,16,36,.5);overflow:hidden;padding:15px 0;position:relative}
+.ticker-track{display:flex;width:max-content;animation:tick 34s linear infinite}
+.ticker:hover .ticker-track{animation-play-state:paused}
+.ticker-track span{font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);padding:0 30px;display:flex;align-items:center;gap:30px;white-space:nowrap}
+.ticker-track em{font-style:normal;color:var(--gold)}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+/* ---------- THE ROOM ---------- */
+.room-card{position:relative;border:1px solid var(--line);background:linear-gradient(160deg,var(--panel) 0%,#130D21 100%);border-radius:22px;padding:clamp(26px,4vw,52px);display:grid;grid-template-columns:auto 1fr;gap:clamp(28px,4vw,58px);align-items:center;overflow:hidden}
+.room-card::before,.room-card::after{content:"";position:absolute;width:26px;height:26px;border-color:var(--gold);border-style:solid;opacity:.8}
+.room-card::before{top:14px;left:14px;border-width:2px 0 0 2px;border-radius:6px 0 0 0}
+.room-card::after{bottom:14px;right:14px;border-width:0 2px 2px 0;border-radius:0 0 6px 0}
+.room-emblem{position:relative;width:clamp(130px,16vw,180px);aspect-ratio:1;flex:none}
+.room-emblem .ring{position:absolute;inset:0;border-radius:50%;border:1px dashed var(--line-gold);animation:spin 40s linear infinite}
+.room-emblem .core{position:absolute;inset:11%;border-radius:50%;display:grid;place-items:center;background:conic-gradient(from 210deg,rgba(224,80,78,.55),rgba(237,194,76,.55),rgba(63,185,132,.55),rgba(91,141,239,.55),rgba(224,80,78,.55));box-shadow:0 20px 50px -14px rgba(231,180,90,.4)}
+.room-emblem .core::before{content:"";position:absolute;inset:5px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#241A3C,#120C20 70%)}
+.room-emblem b{position:relative;font-family:var(--font-display);font-weight:800;font-size:clamp(26px,3.4vw,40px);color:var(--gold);letter-spacing:.04em;text-shadow:0 2px 22px rgba(231,180,90,.5)}
+.room-name h3{font-family:var(--font-display);font-weight:800;font-size:clamp(1.5rem,3.4vw,2.5rem);text-transform:uppercase;letter-spacing:.01em}
+.room-name .tagline{color:var(--muted);margin-top:6px;display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.tag-mini{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);border:1px solid var(--line-gold);padding:4px 10px;border-radius:100px}
+.ledger{margin-top:26px;display:flex;flex-direction:column}
+.ledger-row{display:grid;grid-template-columns:150px 1fr auto;align-items:center;gap:16px;padding:15px 4px;border-top:1px solid var(--line);transition:background .3s,padding .3s}
+.ledger-row:last-child{border-bottom:1px solid var(--line)}
+.ledger-row:hover{background:rgba(231,180,90,.04);padding-left:12px}
+.ledger-row .k{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.26em;color:var(--faint);text-transform:uppercase;display:flex;align-items:center;gap:9px}
+.ledger-row .k svg{width:14px;height:14px;color:var(--gold)}
+.ledger-row .v{font-family:var(--font-mono);font-weight:700;font-size:clamp(.95rem,1.8vw,1.15rem);letter-spacing:.08em;color:var(--cream);word-break:break-all}
+.ledger-row .v.status{color:#8CE6BF;display:flex;align-items:center;gap:10px}
+.copy-btn{width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--line);border-radius:10px;color:var(--muted);transition:all .3s var(--ease);flex:none}
+.copy-btn svg{width:15px;height:15px}
+.copy-btn:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px)}
+.copy-btn.ok{border-color:var(--green);color:var(--green)}
+.room-side-note{margin-top:18px;font-size:13px;color:var(--faint);display:flex;gap:10px;align-items:flex-start}
+.room-side-note svg{width:15px;height:15px;color:var(--gold);flex:none;margin-top:2px}
+
+/* ---------- LEADERSHIP ---------- */
+.lead-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,3vw,34px);align-items:stretch}
+.p-card{position:relative;border:1px solid var(--line);border-radius:20px;background:linear-gradient(170deg,var(--panel),#110C1D);padding:clamp(26px,3.4vw,44px);overflow:hidden;transition:transform .45s var(--ease),border-color .45s,box-shadow .45s}
+.p-card:hover{transform:translateY(-8px);border-color:var(--line-gold);box-shadow:0 30px 60px -24px rgba(0,0,0,.7)}
+.p-card::before{content:"";position:absolute;top:-40%;right:-30%;width:70%;height:80%;background:radial-gradient(closest-side,var(--accent,rgba(231,180,90,.14)),transparent);pointer-events:none}
+.p-card.owner{--accent:rgba(231,180,90,.16)}
+.p-card.deputy{--accent:rgba(91,141,239,.16)}
+.p-avatar{position:relative;width:clamp(96px,10vw,124px);aspect-ratio:1;margin-bottom:24px}
+.p-avatar .halo{position:absolute;inset:-9px;border-radius:50%;border:1px dashed var(--line-gold);animation:spin 30s linear infinite}
+.p-avatar .face{position:absolute;inset:0;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 25%,#2B2044,#140E24 72%);border:1px solid var(--line-gold)}
+.p-avatar .face svg{width:44%;height:44%}
+.p-avatar .orbit{position:absolute;inset:-9px;animation:spin 9s linear infinite}
+.p-avatar .orbit i{position:absolute;top:-3px;left:50%;width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold)}
+.role-badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;padding:8px 15px;border-radius:100px;margin-bottom:16px}
+.role-badge.gold{color:#1D1206;background:linear-gradient(140deg,#F2C76E,var(--gold));box-shadow:0 8px 22px -8px rgba(231,180,90,.6)}
+.role-badge.blue{color:#CFE0FF;background:linear-gradient(140deg,#7BA3F2,var(--blue))}
+.p-name{font-family:var(--font-display);font-weight:800;font-size:clamp(1.25rem,2.4vw,1.7rem);text-transform:uppercase}
+.p-desc{color:var(--muted);margin:10px 0 22px;font-size:.98rem;max-width:40ch}
+.p-id{display:flex;align-items:center;gap:14px;border:1px solid var(--line);border-radius:12px;padding:12px 16px;background:rgba(11,8,18,.55)}
+.p-id small{font-family:var(--font-mono);font-size:9px;letter-spacing:.26em;color:var(--faint);text-transform:uppercase;display:block}
+.p-id b{font-family:var(--font-mono);font-size:15px;font-weight:700;letter-spacing:.08em}
+.p-id .copy-btn{margin-left:auto}
+.chain{margin-top:clamp(36px,5vw,54px);display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap}
+.chain-node{display:flex;flex-direction:column;align-items:center;gap:7px;padding:0 clamp(12px,3vw,34px)}
+.chain-node i{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line-gold);background:var(--panel);color:var(--gold)}
+.chain-node i svg{width:20px;height:20px}
+.chain-node b{font-family:var(--font-mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--cream)}
+.chain-node small{font-family:var(--font-mono);font-size:10px;color:var(--faint);letter-spacing:.1em}
+.chain-line{flex:0 0 clamp(28px,6vw,90px);height:1px;background:repeating-linear-gradient(90deg,var(--gold) 0 6px,transparent 6px 12px);opacity:.5;position:relative;top:-14px}
+
+/* ---------- WELCOME ---------- */
+.welcome-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(34px,5vw,80px)}
+.welcome-sticky{position:sticky;top:110px;align-self:start}
+.welcome-sticky .sec-title em{font-style:normal;color:var(--gold)}
+.vibe-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.vibe-tags span{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.14em;color:var(--muted);border:1px solid var(--line);border-radius:100px;padding:8px 15px;transition:all .3s}
+.vibe-tags span:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px)}
+.welcome-copy p{font-size:clamp(1.05rem,1.7vw,1.25rem);color:#D8D0E4;margin-bottom:22px;line-height:1.75}
+.welcome-copy p b{color:var(--gold);font-weight:700}
+.welcome-copy p:first-child::first-letter{font-family:var(--font-display);font-size:2.6em;float:left;line-height:.9;margin:6px 12px 0 0;color:var(--gold)}
+/* polaroids */
+.moments{display:flex;gap:clamp(12px,2vw,22px);margin-top:44px;flex-wrap:wrap}
+.polaroid{background:#F6EFE1;color:#241A0C;padding:10px 10px 14px;border-radius:6px;box-shadow:0 18px 44px -14px rgba(0,0,0,.65);width:clamp(140px,15vw,190px);transform:rotate(var(--rot,0deg));transition:transform .5s var(--ease),box-shadow .5s;position:relative;flex:none}
+.polaroid::before{content:"";position:absolute;top:-11px;left:50%;transform:translateX(-50%) rotate(-2deg);width:74px;height:22px;background:rgba(231,180,90,.4);border:1px solid rgba(231,180,90,.55)}
+.polaroid:hover{transform:rotate(0deg) translateY(-10px) scale(1.04);box-shadow:0 30px 60px -16px rgba(0,0,0,.75);z-index:3}
+.polaroid .ph{aspect-ratio:4/3;overflow:hidden;border-radius:3px;background:linear-gradient(140deg,#2A2044,#150F26)}
+.polaroid .ph img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+.polaroid:hover .ph img{transform:scale(1.08)}
+.polaroid.noimg .ph{display:grid;place-items:center}
+.polaroid.noimg .ph::after{content:"✦";color:var(--gold);font-size:26px}
+.polaroid figcaption{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;text-align:center;margin-top:10px;color:#4A3A22}
+
+/* ---------- EXPERIENCE bento ---------- */
+.bento{display:grid;grid-template-columns:repeat(12,1fr);gap:18px}
+.b-card{position:relative;border:1px solid var(--line);border-radius:var(--r-card);background:linear-gradient(165deg,var(--panel),#110C1D);padding:clamp(22px,2.6vw,32px);overflow:hidden;transition:transform .45s var(--ease),border-color .45s,box-shadow .45s;display:flex;flex-direction:column;gap:14px;min-height:200px}
+.b-card:hover{transform:translateY(-7px);border-color:var(--bc);box-shadow:0 26px 54px -22px rgba(0,0,0,.75)}
+.b-card .ic{width:48px;height:48px;border-radius:13px;display:grid;place-items:center;background:color-mix(in srgb,var(--bc) 14%,transparent);border:1px solid color-mix(in srgb,var(--bc) 35%,transparent);color:var(--bc);transition:transform .45s var(--ease)}
+.b-card:hover .ic{transform:rotate(-8deg) scale(1.1)}
+.b-card .ic svg{width:22px;height:22px}
+.b-card h4{font-family:var(--font-display);font-weight:800;font-size:15px;letter-spacing:.12em;text-transform:uppercase}
+.b-card p{color:var(--muted);font-size:.94rem;max-width:38ch}
+.b-card .num{position:absolute;top:18px;right:22px;font-family:var(--font-mono);font-size:11px;color:var(--faint);letter-spacing:.2em}
+.b-card .deco{margin-top:auto;pointer-events:none}
+.c-play{grid-column:span 7;--bc:var(--red)}
+.c-voice{grid-column:span 5;--bc:var(--gold)}
+.c-comm{grid-column:span 4;--bc:var(--green)}
+.c-moments{grid-column:span 4;--bc:#E98BBB}
+.c-compete{grid-column:span 4;--bc:var(--yellow)}
+.c-vibes{grid-column:span 12;--bc:var(--blue);flex-direction:row;align-items:center;gap:26px;min-height:130px}
+.eq{display:flex;gap:5px;align-items:flex-end;height:34px}
+.eq i{width:5px;border-radius:3px;background:var(--gold);animation:eq 1.1s ease-in-out infinite}
+.eq i:nth-child(1){height:38%;animation-delay:0s}.eq i:nth-child(2){height:80%;animation-delay:.12s}.eq i:nth-child(3){height:55%;animation-delay:.24s}.eq i:nth-child(4){height:95%;animation-delay:.36s}.eq i:nth-child(5){height:62%;animation-delay:.48s}.eq i:nth-child(6){height:85%;animation-delay:.6s}.eq i:nth-child(7){height:45%;animation-delay:.72s}
+@keyframes eq{0%,100%{transform:scaleY(.5)}50%{transform:scaleY(1)}}
+.avatar-cluster{display:flex}
+.avatar-cluster i{width:34px;height:34px;border-radius:50%;border:2px solid var(--panel);margin-left:-10px;display:grid;place-items:center;font-style:normal;font-family:var(--font-mono);font-size:10px;font-weight:700;color:#0F0A18}
+.avatar-cluster i:first-child{margin-left:0}
+.mini-track{height:8px;border-radius:4px;background:rgba(244,236,221,.07);position:relative;overflow:hidden}
+.mini-track i{position:absolute;top:50%;width:14px;height:14px;margin-top:-7px;border-radius:50%;animation:lane 3.4s linear infinite}
+.mini-track i:nth-child(1){background:var(--red)}
+.mini-track i:nth-child(2){background:var(--gold);animation-delay:-1.1s}
+.mini-track i:nth-child(3){background:var(--green);animation-delay:-2.2s}
+.gift-burst{position:relative;width:44px;height:44px}
+.gift-burst i{position:absolute;width:5px;height:5px;border-radius:50%;background:#E98BBB;animation:burst 2.4s ease-out infinite}
+.gift-burst i:nth-child(2){animation-delay:.4s;background:var(--gold)}
+.gift-burst i:nth-child(3){animation-delay:.8s;background:var(--green)}
+.gift-burst i:nth-child(4){animation-delay:1.2s;background:var(--blue)}
+@keyframes burst{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--tx,20px),var(--ty,-24px)) scale(0);opacity:0}}
+.vibes-orb{width:64px;height:64px;flex:none;border-radius:50%;background:conic-gradient(from 0deg,var(--red),var(--yellow),var(--green),var(--blue),var(--red));filter:blur(0px);animation:spin 12s linear infinite;position:relative}
+.vibes-orb::after{content:"";position:absolute;inset:7px;border-radius:50%;background:var(--panel)}
+.experience-note{margin-top:22px;font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;color:var(--faint);text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.experience-note svg{width:13px;height:13px;color:var(--gold)}
+
+/* ---------- HIGHLIGHTS ---------- */
+.hl-wrap{border:1px solid var(--line);border-radius:22px;background:linear-gradient(160deg,rgba(23,16,36,.85),rgba(15,11,26,.85));overflow:hidden}
+.hl-grid{display:grid;grid-template-columns:1fr 1fr}
+.hl-row{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:clamp(20px,2.6vw,30px) clamp(22px,3vw,38px);border-bottom:1px solid var(--line);transition:background .3s}
+.hl-row:nth-child(odd){border-right:1px solid var(--line)}
+.hl-row:hover{background:rgba(231,180,90,.045)}
+.hl-row .k{display:flex;align-items:center;gap:12px;font-family:var(--font-mono);font-size:10px;letter-spacing:.26em;color:var(--faint);text-transform:uppercase}
+.hl-row .k svg{width:16px;height:16px;color:var(--gold)}
+.hl-row .v{font-family:var(--font-mono);font-weight:700;font-size:clamp(.92rem,1.6vw,1.1rem);letter-spacing:.07em;text-align:right;display:flex;align-items:center;gap:12px;word-break:break-all}
+.hl-row .v.live{color:#8CE6BF}
+.hl-row .v.gold{color:var(--gold)}
+
+/* ---------- FEATURED ---------- */
+.featured{position:relative;border:1px solid var(--line-gold);border-radius:26px;overflow:hidden;text-align:center;padding:clamp(56px,8vw,100px) clamp(20px,4vw,60px);background:radial-gradient(600px 340px at 50% -10%,rgba(231,180,90,.2),transparent 70%),linear-gradient(170deg,#1C1330,#0F0A1A)}
+.beam{position:absolute;top:-60%;left:50%;width:min(680px,120%);height:130%;transform:translateX(-50%);background:conic-gradient(from 180deg at 50% 0%,transparent 40%,rgba(231,180,90,.13) 50%,transparent 60%);animation:beamSway 9s ease-in-out infinite;pointer-events:none}
+@keyframes beamSway{0%,100%{transform:translateX(-52%) rotate(-3deg)}50%{transform:translateX(-48%) rotate(3deg)}}
+.f-crown{width:84px;height:84px;margin:0 auto 22px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line-gold);background:radial-gradient(circle at 34% 28%,rgba(231,180,90,.3),rgba(231,180,90,.06));position:relative}
+.f-crown svg{width:38px;height:38px;color:var(--gold)}
+.f-crown::after{content:"";position:absolute;inset:-10px;border-radius:50%;border:1px dashed rgba(231,180,90,.3);animation:spin 26s linear infinite}
+.f-kick{font-family:var(--font-mono);font-size:11px;letter-spacing:.4em;color:var(--gold);text-transform:uppercase}
+.f-name{font-family:var(--font-display);font-weight:900;font-size:clamp(2.2rem,6.4vw,4.6rem);text-transform:uppercase;margin:16px 0 14px;line-height:1.02}
+.f-quote{color:var(--muted);font-size:clamp(1rem,1.6vw,1.15rem);font-style:italic;max-width:52ch;margin:0 auto}
+.f-stars{position:absolute;inset:0;pointer-events:none}
+.f-stars i{position:absolute;color:var(--gold);font-style:normal;animation:twinkle 3s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:.15;transform:scale(.7)}50%{opacity:1;transform:scale(1.15)}}
+.f-fine{margin-top:26px;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.24em;color:var(--faint);text-transform:uppercase}
+.laurel{display:flex;justify-content:center;gap:14px;margin-top:20px;color:var(--gold)}
+.laurel svg{width:22px;height:22px;opacity:.85}
+
+/* ---------- COMMUNITY WALL ---------- */
+.demo-chip{display:inline-flex;align-items:center;gap:7px;font-family:var(--font-mono);font-size:9px;letter-spacing:.26em;text-transform:uppercase;color:var(--faint);border:1px solid var(--line);padding:5px 11px;border-radius:100px;margin-left:12px;vertical-align:middle}
+.demo-chip i{width:5px;height:5px;border-radius:50%;background:var(--gold);font-style:normal}
+.wall{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.w-card{position:relative;border:1px solid var(--line);border-radius:16px;background:linear-gradient(160deg,var(--panel),#120C1F);padding:26px 24px 22px;transform:rotate(var(--rot,0deg));transition:transform .45s var(--ease),border-color .45s,box-shadow .45s}
+.w-card:hover{transform:rotate(0) translateY(-8px);border-color:var(--line-gold);box-shadow:0 24px 48px -20px rgba(0,0,0,.7);z-index:2}
+.w-card::before{content:"";position:absolute;top:-10px;left:24px;width:58px;height:18px;background:rgba(231,180,90,.24);border:1px solid rgba(231,180,90,.35);transform:rotate(-3deg)}
+.w-card p{font-size:1.02rem;color:#E6DEEF;line-height:1.6;margin-bottom:20px}
+.w-who{display:flex;align-items:center;gap:11px}
+.w-who i{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-family:var(--font-mono);font-size:11px;font-weight:700;color:#100A1A}
+.w-who small{font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;color:var(--faint)}
+
+/* ---------- CHAT ---------- */
+.chat-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(26px,4vw,56px);align-items:center;margin-top:clamp(40px,5vw,64px)}
+.chat-copy h3{font-family:var(--font-display);font-weight:800;font-size:clamp(1.4rem,2.8vw,2rem);text-transform:uppercase;line-height:1.15}
+.chat-copy p{color:var(--muted);margin-top:14px;max-width:44ch}
+.chat-panel{border:1px solid var(--line);border-radius:20px;background:linear-gradient(175deg,#191128,#0F0A19);overflow:hidden;box-shadow:0 34px 70px -30px rgba(0,0,0,.8)}
+.chat-head{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line);background:rgba(231,180,90,.05)}
+.chat-head .mini-emb{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:radial-gradient(circle at 32% 28%,#2B2044,#140E24);border:1px solid var(--line-gold);font-family:var(--font-display);font-size:11px;font-weight:800;color:var(--gold)}
+.chat-head b{font-family:var(--font-display);font-size:12px;letter-spacing:.1em;display:block}
+.chat-head small{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.18em;color:#8CE6BF;display:flex;align-items:center;gap:6px;text-transform:uppercase}
+.chat-head small i{width:6px;height:6px;border-radius:50%;background:var(--green);font-style:normal;animation:blink 1.6s ease-in-out infinite}
+@keyframes blink{50%{opacity:.3}}
+.chat-body{padding:20px;display:flex;flex-direction:column;gap:14px;min-height:280px}
+.msg{display:flex;gap:11px;align-items:flex-end;opacity:0;transform:translateY(16px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.chat-panel.in .msg{opacity:1;transform:none}
+.chat-panel.in .msg:nth-child(1){transition-delay:.2s}
+.chat-panel.in .msg:nth-child(2){transition-delay:.8s}
+.chat-panel.in .msg:nth-child(3){transition-delay:1.4s}
+.chat-panel.in .msg:nth-child(4){transition-delay:2s}
+.chat-panel.in .msg:nth-child(5){transition-delay:2.6s}
+.msg .av{width:30px;height:30px;border-radius:50%;flex:none;display:grid;place-items:center;font-family:var(--font-mono);font-size:10px;font-weight:700;color:#100A1A}
+.msg .bub{background:#221838;border:1px solid var(--line);border-radius:13px 13px 13px 4px;padding:10px 14px;max-width:78%}
+.msg .bub small{display:block;font-family:var(--font-mono);font-size:8.5px;letter-spacing:.2em;color:var(--faint);margin-bottom:3px;text-transform:uppercase}
+.msg .bub span{font-size:.92rem;color:#E6DEEF}
+.msg.typing .bub{display:flex;gap:5px;padding:14px 16px}
+.msg.typing .bub i{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:typeB 1.2s ease-in-out infinite;font-style:normal}
+.msg.typing .bub i:nth-child(2){animation-delay:.15s}.msg.typing .bub i:nth-child(3){animation-delay:.3s}
+@keyframes typeB{0%,100%{transform:translateY(0);opacity:.4}50%{transform:translateY(-5px);opacity:1}}
+.chat-input{display:flex;align-items:center;gap:12px;padding:14px 18px;border-top:1px solid var(--line)}
+.chat-input .fake{flex:1;border:1px solid var(--line);border-radius:100px;padding:11px 18px;font-size:.88rem;color:var(--faint);background:rgba(11,8,18,.5)}
+.chat-input .send{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(140deg,#F2C76E,var(--gold));color:#1D1206;flex:none}
+.chat-input .send svg{width:16px;height:16px}
+
+/* ---------- SPOTLIGHT ---------- */
+.spot-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.sp-card{border:1px solid var(--line);border-radius:18px;background:linear-gradient(170deg,var(--panel),#100B1B);padding:28px 22px;text-align:center;position:relative;overflow:hidden;transition:transform .45s var(--ease),border-color .45s,box-shadow .45s}
+.sp-card:hover{transform:translateY(-8px);border-color:color-mix(in srgb,var(--pc) 55%,transparent);box-shadow:0 24px 50px -20px rgba(0,0,0,.75)}
+.sp-card::before{content:"";position:absolute;top:-44%;left:15%;width:70%;height:60%;background:radial-gradient(closest-side,color-mix(in srgb,var(--pc) 22%,transparent),transparent);pointer-events:none}
+.sp-av{width:76px;height:76px;margin:0 auto 16px;border-radius:50%;display:grid;place-items:center;position:relative;background:radial-gradient(circle at 32% 26%,#292045,#130D22 75%);border:1px solid color-mix(in srgb,var(--pc) 45%,transparent)}
+.sp-av svg{width:36px;height:36px;color:var(--pc);filter:drop-shadow(0 0 10px color-mix(in srgb,var(--pc) 60%,transparent))}
+.sp-card h5{font-family:var(--font-display);font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+.sp-role{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.24em;color:var(--pc);text-transform:uppercase;display:block;margin:8px 0 12px}
+.sp-card p{font-size:.88rem;color:var(--muted)}
+.sp-badge{margin-top:16px;display:inline-flex;align-items:center;gap:7px;font-family:var(--font-mono);font-size:8.5px;letter-spacing:.22em;color:var(--gold);border:1px solid var(--line-gold);border-radius:100px;padding:6px 12px;text-transform:uppercase}
+.sp-badge svg{width:11px;height:11px}
+
+/* ---------- GAME ENERGY ---------- */
+.energy{position:relative;overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:
+  radial-gradient(700px 400px at 50% 120%,rgba(224,80,78,.1),transparent 70%),
+  linear-gradient(180deg,#0E0A18,#130D21)}
+.energy::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(244,236,221,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(244,236,221,.03) 1px,transparent 1px);background-size:52px 52px}
+.energy-in{position:relative;text-align:center}
+.dice-row{display:flex;justify-content:center;gap:clamp(18px,4vw,44px);margin-bottom:clamp(30px,4vw,50px)}
+.dice-row svg{width:clamp(56px,8vw,92px);height:auto;filter:drop-shadow(0 16px 26px rgba(0,0,0,.5));animation:bob 4.4s ease-in-out infinite}
+.dice-row svg:nth-child(2){animation-delay:-1.4s}
+.dice-row svg:nth-child(3){animation-delay:-2.8s}
+.energy-words{font-family:var(--font-display);font-weight:900;font-size:clamp(1.7rem,5.6vw,4rem);text-transform:uppercase;line-height:1.15;display:flex;flex-wrap:wrap;justify-content:center;gap:.5em}
+.energy-words b{font-weight:900}
+.energy-words .w1{color:var(--red)}.energy-words .w2{color:var(--gold)}.energy-words .w3{color:var(--green)}.energy-words .w4{color:var(--blue)}
+.energy-words .sep{color:var(--faint);font-size:.5em;align-self:center}
+.lane-wrap{margin-top:clamp(34px,5vw,56px);position:relative;height:88px}
+.lane-line{position:absolute;left:0;right:0;top:50%;border-top:2px dashed rgba(244,236,221,.14)}
+.lane-pawn{position:absolute;top:50%;transform:translateY(-58%);animation:lane linear infinite}
+.lane-pawn svg{width:34px;height:auto;filter:drop-shadow(0 8px 10px rgba(0,0,0,.5))}
+@keyframes lane{from{left:-6%}to{left:103%}}
+.lane-cell{position:absolute;top:50%;transform:translateY(-50%);width:14px;height:14px;border-radius:4px;border:1px solid rgba(244,236,221,.12)}
+
+/* ---------- RULES ---------- */
+.rules-list{border-top:1px solid var(--line)}
+.rule{display:grid;grid-template-columns:110px 1fr;gap:clamp(18px,4vw,50px);align-items:center;padding:clamp(24px,3.4vw,38px) 6px;border-bottom:1px solid var(--line);transition:background .35s,padding-left .35s}
+.rule:hover{background:rgba(231,180,90,.04);padding-left:20px}
+.rule .no{font-family:var(--font-display);font-weight:900;font-size:clamp(2rem,4.6vw,3.4rem);color:transparent;-webkit-text-stroke:1px rgba(231,180,90,.45);transition:color .4s,-webkit-text-stroke-color .4s;line-height:1}
+.rule:hover .no{color:var(--gold);-webkit-text-stroke-color:var(--gold)}
+.rule h5{font-family:var(--font-display);font-weight:700;font-size:clamp(1.05rem,2.2vw,1.4rem);text-transform:uppercase;letter-spacing:.04em}
+.rule p{color:var(--muted);font-size:.95rem;margin-top:5px}
+
+/* ---------- INVITE ---------- */
+.invite-panel{position:relative;border:1px solid var(--line-gold);border-radius:28px;overflow:hidden;text-align:center;padding:clamp(54px,8vw,96px) clamp(20px,5vw,70px);background:radial-gradient(640px 380px at 50% 115%,rgba(231,180,90,.18),transparent 70%),linear-gradient(175deg,#1B1230,#0E0918)}
+.invite-panel .f-stars i{color:var(--gold)}
+.invite-kick{font-family:var(--font-mono);font-size:11px;letter-spacing:.42em;color:var(--gold);text-transform:uppercase}
+.invite-title{font-family:var(--font-display);font-weight:900;font-size:clamp(1.9rem,5.4vw,3.8rem);text-transform:uppercase;margin:18px auto 16px;line-height:1.06;max-width:18ch}
+.invite-title em{font-style:normal;color:var(--gold)}
+.invite-sub{color:var(--muted);max-width:56ch;margin:0 auto;font-size:clamp(.98rem,1.5vw,1.1rem)}
+.invite-id{display:flex;justify-content:center;margin:30px 0}
+.invite-ctas{display:flex;justify-content:center;flex-wrap:wrap;gap:16px}
+.invite-help{margin-top:26px;font-family:var(--font-mono);font-size:10px;letter-spacing:.22em;color:var(--faint);text-transform:uppercase;display:flex;flex-wrap:wrap;justify-content:center;gap:8px 18px}
+.invite-help b{color:var(--muted);font-weight:600}
+
+/* ---------- FOOTER ---------- */
+footer{border-top:1px solid var(--line);padding:clamp(56px,7vw,90px) 0 34px;background:linear-gradient(180deg,transparent,rgba(23,16,36,.6))}
+.foot-word{font-family:var(--font-display);font-weight:900;font-size:clamp(2.4rem,9vw,7rem);text-transform:uppercase;line-height:1;text-align:center;color:transparent;-webkit-text-stroke:1px rgba(231,180,90,.3);letter-spacing:.02em;user-select:none;margin-bottom:clamp(36px,5vw,60px)}
+.foot-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:clamp(28px,4vw,60px)}
+.foot-brand p{color:var(--muted);font-size:.95rem;max-width:34ch;margin-top:14px}
+.foot-tag{margin-top:18px}
+.foot-col h6{font-family:var(--font-mono);font-size:10px;letter-spacing:.3em;color:var(--faint);text-transform:uppercase;margin-bottom:18px}
+.foot-row{display:flex;align-items:center;gap:12px;padding:9px 0;font-family:var(--font-mono);font-size:13px;letter-spacing:.06em;color:var(--cream)}
+.foot-row svg{width:14px;height:14px;color:var(--gold);flex:none}
+.foot-row .copy-btn{width:30px;height:30px;margin-left:auto;border-radius:8px}
+.foot-bottom{margin-top:clamp(40px,5vw,64px);padding-top:26px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px;align-items:center}
+.foot-bottom small{font-size:12px;color:var(--faint)}
+.foot-bottom .disclaimer{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;color:var(--faint)}
+
+/* ---------- toast ---------- */
+.toast{position:fixed;bottom:30px;left:50%;transform:translate(-50%,80px);z-index:180;display:flex;align-items:center;gap:11px;background:#1E1531;border:1px solid var(--gold);border-radius:100px;padding:13px 24px;font-family:var(--font-mono);font-size:12.5px;font-weight:600;letter-spacing:.08em;color:var(--cream);box-shadow:0 18px 44px -10px rgba(0,0,0,.7),0 0 30px -6px rgba(231,180,90,.4);opacity:0;transition:transform .5s var(--ease),opacity .5s;pointer-events:none;white-space:nowrap}
+.toast.show{transform:translate(-50%,0);opacity:1}
+.toast svg{width:16px;height:16px;color:var(--green)}
+
+/* ---------- responsive ---------- */
+@media (max-width:1024px){
+  .hero-grid{grid-template-columns:1fr;gap:56px}
+  .hero{padding-top:118px;text-align:left}
+  .hero-visual{min-height:0;order:2}
+  .chip-c{right:-2%}
+  .lead-grid{grid-template-columns:1fr}
+  .welcome-grid{grid-template-columns:1fr}
+  .welcome-sticky{position:static}
+  .bento{grid-template-columns:repeat(6,1fr)}
+  .c-play{grid-column:span 6}.c-voice{grid-column:span 6}
+  .c-comm,.c-moments,.c-compete{grid-column:span 3}
+  .c-vibes{grid-column:span 6}
+  .hl-grid{grid-template-columns:1fr}
+  .hl-row:nth-child(odd){border-right:none}
+  .chat-grid{grid-template-columns:1fr}
+  .spot-grid{grid-template-columns:repeat(2,1fr)}
+  .wall{grid-template-columns:repeat(2,1fr)}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:720px){
+  .nav-links,.nav-cta .btn{display:none}
+  .burger{display:flex}
+  .hero-ctas .btn{flex:1;min-width:200px}
+  .room-card{grid-template-columns:1fr;text-align:center;justify-items:center}
+  .ledger-row{grid-template-columns:1fr;gap:6px;text-align:left}
+  .ledger-row .v{font-size:1rem}
+  .room-side-note{justify-content:center;text-align:left}
+  .c-comm,.c-moments,.c-compete{grid-column:span 6}
+  .c-vibes{flex-direction:column;align-items:flex-start;gap:18px}
+  .wall{grid-template-columns:1fr}
+  .spot-grid{grid-template-columns:1fr}
+  .chain{flex-direction:column;gap:20px}
+  .chain-line{width:1px;height:34px;flex-basis:auto;background:repeating-linear-gradient(180deg,var(--gold) 0 6px,transparent 6px 12px);top:0}
+  .rule{grid-template-columns:64px 1fr}
+  .foot-grid{grid-template-columns:1fr}
+  .chip-b{left:-2%}
+  .chip-c{right:-2%}
+  .hero-idrow{gap:10px}
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+  html{scroll-behavior:auto}
+  .rv{opacity:1;transform:none;filter:none}
+  .msg{opacity:1;transform:none}
+  .die{animation:none;transform:rotateX(-20deg) rotateY(20deg)}
+  .ticker-track{animation:none}
+}
+</style>
+</head>
+<body>
+
+<!-- SVG symbol library -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-pawn" viewBox="0 0 24 30">
+      <path fill="currentColor" d="M12 1.2c2.9 0 5 2.1 5 4.8 0 1.7-.8 3.1-2 4.1 3 1.3 4.8 4 5.2 7.9H3.8c.4-3.9 2.2-6.6 5.2-7.9-1.2-1-2-2.4-2-4.1 0-2.7 2.1-4.8 5-4.8z"/>
+      <path fill="currentColor" d="M4.6 19.6h14.8l1.1 5.6c.3 1.5-.9 2.9-2.4 2.9H5.9c-1.5 0-2.7-1.4-2.4-2.9z" opacity=".85"/>
+    </symbol>
+    <symbol id="i-dice" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="8.2" cy="8.2" r="1.6" fill="currentColor"/><circle cx="15.8" cy="8.2" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="8.2" cy="15.8" r="1.6" fill="currentColor"/><circle cx="15.8" cy="15.8" r="1.6" fill="currentColor"/></symbol>
+    <symbol id="i-crown" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M3 8l4.5 3.5L12 5l4.5 6.5L21 8l-1.6 10H4.6L3 8z"/><path stroke="currentColor" stroke-width="1.8" d="M5 21h14"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M12 2.5l7.5 3v6c0 4.6-3.2 8.4-7.5 10-4.3-1.6-7.5-5.4-7.5-10v-6l7.5-3z"/><path fill="none" stroke="currentColor" stroke-width="1.8" d="M8.8 12l2.3 2.3 4.2-4.4"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3.5"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.4" fill="none" stroke="currentColor" stroke-width="1.8"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M2.8 20c.6-3.5 3.1-5.4 6.2-5.4s5.6 1.9 6.2 5.4M16 4.9a3.4 3.4 0 0 1 0 6.2M18 14.9c2 .7 3.1 2.3 3.5 4.6"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M4 5h16v11H9l-5 4V5z"/></symbol>
+    <symbol id="i-gift" viewBox="0 0 24 24"><rect x="3.5" y="8" width="17" height="4" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="5" y="12" width="14" height="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path fill="none" stroke="currentColor" stroke-width="1.8" d="M12 8v13M12 8c-4.5 0-5.5-5-2.5-5S12 8 12 8zm0 0c4.5 0 5.5-5 2.5-5S12 8 12 8z"/></symbol>
+    <symbol id="i-trophy" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M7 4h10v6a5 5 0 0 1-10 0V4z"/><path fill="none" stroke="currentColor" stroke-width="1.8" d="M7 6H3.5c0 3.5 1.7 5 3.7 5.4M17 6h3.5c0 3.5-1.7 5-3.7 5.4M12 15v3.5M8 21h8"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M12 2.5l2 6.5 6.5 2-6.5 2-2 6.5-2-6.5-6.5-2 6.5-2 2-6.5z"/><path fill="none" stroke="currentColor" stroke-width="1.5" d="M19 15.5l.9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9.9-2.6z"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="12" height="12" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path fill="none" stroke="currentColor" stroke-width="1.8" d="M15.5 5.5v-1a2 2 0 0 0-2-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h1"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.5l5 5 10-11"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 12h15M13 5.5L19.5 12 13 18.5"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.5l2.4 6.8 7 .4-5.4 4.5 1.8 6.9L12 17.2l-5.8 3.9 1.8-6.9L2.6 9.7l7-.4L12 2.5z"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M21 3L10.5 13.5M21 3l-7 18-3.5-7.5L3 10l18-7z"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M12 20.5S3.5 15 3.5 8.9C3.5 5.9 5.8 4 8.2 4c1.7 0 3 .9 3.8 2.2C12.8 4.9 14.1 4 15.8 4c2.4 0 4.7 1.9 4.7 4.9 0 6.1-8.5 11.6-8.5 11.6z"/></symbol>
+  </defs>
+</svg>
+
+<!-- background layers -->
+<div class="bg-layers" aria-hidden="true"></div>
+<div class="bg-grid" aria-hidden="true"></div>
+<div class="noise" aria-hidden="true"></div>
+
+<!-- preloader -->
+<div id="loader" aria-hidden="true">
+  <div class="ldr-tw"><b>TW</b></div>
+  <div class="ldr-name" id="ldrName"></div>
+  <div class="ldr-bar"><i></i></div>
+</div>
+<noscript><style>#loader{display:none}.rv{opacity:1;transform:none;filter:none}</style></noscript>
+
+<!-- custom cursor -->
+<div class="cur-dot" aria-hidden="true"></div>
+<div class="cur-ring" aria-hidden="true"></div>
+
+<!-- ============ NAV ============ -->
+<header class="nav" id="nav">
+  <div class="nav-in">
+    <a class="brand" href="#home" aria-label="THARKI WORLD home">
+      <span class="brand-mark"><b>TW</b></span>
+      <span class="brand-txt"><b>THARKI WORLD</b><small>Room Community</small></span>
+    </a>
+    <nav aria-label="Primary">
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#room">Room</a></li>
+        <li><a href="#owner">Owner</a></li>
+        <li><a href="#community">Community</a></li>
+        <li><a href="#highlights">Highlights</a></li>
+      </ul>
+    </nav>
+    <div class="nav-cta">
+      <a href="#invite" class="btn btn-gold">Enter Room</a>
+      <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <div class="nav-progress" id="navProgress"></div>
+</header>
+
+<!-- mobile menu -->
+<div class="m-menu" id="mMenu">
+  <a href="#home" style="--i:0">Home <small>00</small></a>
+  <a href="#room" style="--i:1">The Room <small>01</small></a>
+  <a href="#owner" style="--i:2">Leadership <small>02</small></a>
+  <a href="#community" style="--i:3">Community <small>03</small></a>
+  <a href="#highlights" style="--i:4">Highlights <small>05</small></a>
+  <a href="#invite" style="--i:5">Enter Room <small>✦</small></a>
+  <div class="m-menu-foot">
+    <div class="id-chip"><span class="lbl">Room ID</span><span class="val mono" data-bind="roomId">21178301040</span></div>
+    <a href="#invite" class="btn btn-gold" style="width:100%">Enter THARKI WORLD</a>
+  </div>
+</div>
+
+<main>
+<!-- ============ HERO ============ -->
+<section class="hero" id="home">
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="hero-glow two" aria-hidden="true"></div>
+  <div id="heroParticles" aria-hidden="true"></div>
+
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <span class="badge-pill rv"><svg><use href="#i-dice"/></svg> Yalla Ludo • Room Community</span>
+      <h1 class="hero-title" aria-label="THARKI WORLD">
+        <span class="t1" id="ht1">THARKI</span>
+        <span class="t2" id="ht2">WORLD</span>
+      </h1>
+      <p class="hero-tag rv" style="transition-delay:.15s">Where the game begins. <b>Where the people stay.</b> One room, four colors, endless stories — this is the digital home of the THARKI WORLD community.</p>
+
+      <div class="hero-idrow rv" style="transition-delay:.25s">
+        <div class="id-chip">
+          <span class="lbl">Room ID</span>
+          <span class="val mono" data-bind="roomId">21178301040</span>
+          <button class="copy-btn" data-copy="21178301040" data-label="Room ID" aria-label="Copy Room ID"><svg><use href="#i-copy"/></svg></button>
+        </div>
+        <div class="status-pill"><span class="dot"></span> Room Community Active</div>
+      </div>
+
+      <div class="hero-ctas rv" style="transition-delay:.35s">
+        <a href="#invite" class="btn btn-gold" data-enter><svg><use href="#i-arrow"/></svg> Enter THARKI WORLD</a>
+        <a href="#room" class="btn btn-ghost"><svg><use href="#i-spark"/></svg> Explore Room</a>
+      </div>
+
+      <div class="hero-foot rv" style="transition-delay:.45s"><i></i> Fan-made room experience — scroll to step inside</div>
+    </div>
+
+    <!-- hero visual: the board emblem -->
+    <div class="hero-visual" aria-hidden="true">
+      <div class="board-stage" id="boardStage">
+        <div class="board-glow"></div>
+        <div class="board-ring"></div>
+        <div class="board-ring two"></div>
+        <div id="boardMount"></div>
+        <div class="chip-float chip-a"><svg><use href="#i-crown"/></svg> FEATURED ROOM</div>
+        <div class="chip-float chip-b"><span class="dot"></span> COMMUNITY ACTIVE</div>
+        <div class="chip-float chip-c mono">ID&nbsp;<span data-bind="roomId">21178301040</span></div>
+        <div class="die-holder">
+          <div class="die-scene">
+            <div class="die">
+              <div class="f f1"><span class="p" style="grid-area:2/2"></span></div>
+              <div class="f f6"><span class="p" style="grid-area:1/1"></span><span class="p" style="grid-area:1/3"></span><span class="p" style="grid-area:2/1"></span><span class="p" style="grid-area:2/3"></span><span class="p" style="grid-area:3/1"></span><span class="p" style="grid-area:3/3"></span></div>
+              <div class="f f3"><span class="p" style="grid-area:1/1"></span><span class="p" style="grid-area:2/2"></span><span class="p" style="grid-area:3/3"></span></div>
+              <div class="f f4"><span class="p" style="grid-area:1/1"></span><span class="p" style="grid-area:1/3"></span><span class="p" style="grid-area:3/1"></span><span class="p" style="grid-area:3/3"></span></div>
+              <div class="f f5"><span class="p" style="grid-area:1/1"></span><span class="p" style="grid-area:1/3"></span><span class="p" style="grid-area:2/2"></span><span class="p" style="grid-area:3/1"></span><span class="p" style="grid-area:3/3"></span></div>
+              <div class="f f2"><span class="p" style="grid-area:1/1"></span><span class="p" style="grid-area:1/3"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TICKER ============ -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span>THARKI WORLD <em>✦</em> ROOM 21178301040 <em>✦</em> ROLL · PLAY · LAUGH · REPEAT <em>✦</em> WHERE THE GAME BEGINS <em>✦</em> FAN-MADE COMMUNITY <em>✦</em></span>
+    <span>THARKI WORLD <em>✦</em> ROOM 21178301040 <em>✦</em> ROLL · PLAY · LAUGH · REPEAT <em>✦</em> WHERE THE GAME BEGINS <em>✦</em> FAN-MADE COMMUNITY <em>✦</em></span>
+  </div>
+</div>
+
+<!-- ============ 01 · THE ROOM ============ -->
+<section id="room">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="kicker">01 · Identity</span>
+      <h2 class="sec-title">The Room</h2>
+      <p class="sec-sub">One name. One ID. A whole universe of people, matches and moments behind it.</p>
+    </div>
+
+    <div class="room-card rv">
+      <div class="room-emblem" aria-hidden="true">
+        <div class="ring"></div>
+        <div class="core"><b>TW</b></div>
+      </div>
+      <div>
+        <div class="room-name">
+          <h3 data-bind="roomName">THARKI WORLD</h3>
+          <div class="tagline">Community Room <span class="tag-mini">Social · Game</span> <span class="tag-mini">Hinglish Vibes</span></div>
+        </div>
+        <div class="ledger">
+          <div class="ledger-row">
+            <span class="k"><svg><use href="#i-dice"/></svg> Room ID</span>
+            <span class="v" data-bind="roomId">21178301040</span>
+            <button class="copy-btn" data-copy="21178301040" data-label="Room ID" aria-label="Copy Room ID"><svg><use href="#i-copy"/></svg></button>
+          </div>
+          <div class="ledger-row">
+            <span class="k"><svg><use href="#i-crown"/></svg> Room Owner</span>
+            <span class="v" data-bind="ownerId">1143467181D</span>
+            <button class="copy-btn" data-copy="1143467181D" data-label="Owner ID" aria-label="Copy Owner ID"><svg><use href="#i-copy"/></svg></button>
+          </div>
+          <div class="ledger-row">
+            <span class="k"><svg><use href="#i-shield"/></svg> Deputy Owner</span>
+            <span class="v" data-bind="deputyId">29020089491</span>
+            <button class="copy-btn" data-copy="29020089491" data-label="Deputy Owner ID" aria-label="Copy Deputy Owner ID"><svg><use href="#i-copy"/></svg></button>
+          </div>
+          <div class="ledger-row">
+            <span class="k"><svg><use href="#i-spark"/></svg> Room Status</span>
+            <span class="v status"><span class="dot"></span> ACTIVE COMMUNITY</span>
+            <span></span>
+          </div>
+        </div>
+        <p class="room-side-note"><svg><use href="#i-heart"/></svg> Searching the Room ID inside Yalla Ludo is the fastest way in. Everything else — the noise, the people, the chaos — is already waiting.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec-divider" aria-hidden="true"><span>✦ ✦ ✦</span></div>
+
+<!-- ============ 02 · LEADERSHIP ============ -->
+<section id="owner">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="kicker">02 · Leadership</span>
+      <h2 class="sec-title">The Owner</h2>
+      <p class="sec-sub">The person behind THARKI WORLD — and the right hand keeping it running.</p>
+    </div>
+
+    <div class="lead-grid">
+      <!-- OWNER -->
+      <article class="p-card owner rv rv-l">
+        <span class="role-badge gold"><svg style="width:13px;height:13px"><use href="#i-crown"/></svg> Room Owner</span>
+        <div class="p-avatar">
+          <div class="halo"></div>
+          <div class="face"><svg style="color:var(--gold)"><use href="#i-crown"/></svg></div>
+          <div class="orbit"><i></i></div>
+        </div>
+        <h3 class="p-name">The Room Owner</h3>
+        <p class="p-desc">The one who lit the first lamp in THARKI WORLD. Keeps the games fair, the door open and the energy loud.</p>
+        <div class="p-id">
+          <div><small>Owner ID</small><b data-bind="ownerId">1143467181D</b></div>
+          <button class="copy-btn" data-copy="1143467181D" data-label="Owner ID" aria-label="Copy Owner ID"><svg><use href="#i-copy"/></svg></button>
+        </div>
+      </article>
+
+      <!-- DEPUTY -->
+      <article class="p-card deputy rv rv-r">
+        <span class="role-badge blue"><svg style="width:13px;height:13px"><use href="#i-shield"/></svg> Deputy Owner</span>
+        <div class="p-avatar">
+          <div class="halo" style="animation-direction:reverse"></div>
+          <div class="face"><svg style="color:var(--blue)"><use href="#i-shield"/></svg></div>
+          <div class="orbit" style="animation-direction:reverse"><i style="background:var(--blue);box-shadow:0 0 12px var(--blue)"></i></div>
+        </div>
+        <h3 class="p-name">The Deputy Owner</h3>
+        <p class="p-desc">Second-in-command. First in line when the dice get serious. The calm to the room's chaos.</p>
+        <div class="p-id">
+          <div><small>Deputy Owner ID</small><b data-bind="deputyId">29020089491</b></div>
+          <button class="copy-btn" data-copy="29020089491" data-label="Deputy Owner ID" aria-label="Copy Deputy Owner ID"><svg><use href="#i-copy"/></svg></button>
+        </div>
+      </article>
+    </div>
+
+    <!-- chain -->
+    <div class="chain rv" aria-label="Leadership chain">
+      <div class="chain-node"><i><svg><use href="#i-crown"/></svg></i><b>Owner</b><small data-bind="ownerId">1143467181D</small></div>
+      <div class="chain-line"></div>
+      <div class="chain-node"><i><svg><use href="#i-shield"/></svg></i><b>Deputy Owner</b><small data-bind="deputyId">29020089491</small></div>
+      <div class="chain-line"></div>
+      <div class="chain-node"><i><svg><use href="#i-users"/></svg></i><b>Community</b><small>THARKI WORLD</small></div>
+    </div>
+  </div>
+</section>
+
+<div class="sec-divider" aria-hidden="true"><span>✦ ✦ ✦</span></div>
+
+<!-- ============ 03 · WELCOME ============ -->
+<section id="community">
+  <div class="wrap">
+    <div class="welcome-grid">
+      <div class="welcome-sticky rv rv-l">
+        <span class="kicker">03 · Community</span>
+        <h2 class="sec-title">Welcome to <em>THARKI WORLD</em></h2>
+        <div class="vibe-tags" aria-label="Room vibes">
+          <span>FULL FILMI</span><span>ZERO BORING MOMENTS</span><span>RESPECT FIRST</span><span>CHAOS OPTIONAL</span><span>ONE MORE GAME</span>
+        </div>
+      </div>
+      <div class="welcome-copy rv rv-r">
+        <p>Some rooms are just a table and four tokens. <b>THARKI WORLD is the noise around it</b> — the voice notes, the revenge matches, the "one last game" that somehow becomes three hours.</p>
+        <p>People come for the rolls. They stay because somebody remembered their name. Win, lose, rage, laugh — <b>the board resets, the room remembers.</b></p>
+        <p>No entry fees, no dress code. Bring your best strategy or your worst luck; both get a seat here.</p>
+
+        <div class="moments">
+          <figure class="polaroid" style="--rot:-4deg">
+            <div class="ph"><img src="https://picsum.photos/seed/tharki-ludo-night/420/315" alt="Late night game vibes" loading="lazy" onerror="this.closest('.polaroid').classList.add('noimg');this.remove()"></div>
+            <figcaption>Late-night finals</figcaption>
+          </figure>
+          <figure class="polaroid" style="--rot:2.5deg">
+            <div class="ph"><img src="https://picsum.photos/seed/tharki-dice-table/420/315" alt="Dice on the table" loading="lazy" onerror="this.closest('.polaroid').classList.add('noimg');this.remove()"></div>
+            <figcaption>Dice don't lie</figcaption>
+          </figure>
+          <figure class="polaroid" style="--rot:-1.5deg">
+            <div class="ph"><img src="https://picsum.photos/seed/tharki-room-energy/420/315" alt="Room energy" loading="lazy" onerror="this.closest('.polaroid').classList.add('noimg');this.remove()"></div>
+            <figcaption>Room energy, always</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 · EXPERIENCE ============ -->
+<section id="experience" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="kicker">04 · Experience</span>
+      <h2 class="sec-title">The THARKI WORLD Experience</h2>
+      <p class="sec-sub">What living inside this room feels like — six shades of the same vibe.</p>
+    </div>
+
+    <div class="bento">
+      <article class="b-card c-play rv">
+        <span class="num">/ 01</span>
+        <div class="ic"><svg><use href="#i-dice"/></svg></div>
+        <h4>Play</h4>
+        <p>Games, competition and the unexpected moments that become room lore. Every roll is a plot twist.</p>
+        <div class="deco mini-track" aria-hidden="true"><i></i><i></i><i></i></div>
+      </article>
+
+      <article class="b-card c-voice rv" style="transition-delay:.08s">
+        <span class="num">/ 02</span>
+        <div class="ic"><svg><use href="#i-mic"/></svg></div>
+        <h4>Voice</h4>
+        <p>Talk, laugh, meet people. The mic is where strangers turn into regulars.</p>
+        <div class="deco eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      </article>
+
+      <article class="b-card c-comm rv">
+        <span class="num">/ 03</span>
+        <div class="ic"><svg><use href="#i-users"/></svg></div>
+        <h4>Community</h4>
+        <p>A room built around people, not just players.</p>
+        <div class="deco avatar-cluster" aria-hidden="true"><i style="background:var(--red)">P1</i><i style="background:var(--gold)">P2</i><i style="background:var(--green)">P3</i><i style="background:var(--blue)">+∞</i></div>
+      </article>
+
+      <article class="b-card c-moments rv" style="transition-delay:.08s">
+        <span class="num">/ 04</span>
+        <div class="ic"><svg><use href="#i-gift"/></svg></div>
+        <h4>Moments</h4>
+        <p>Gifts, reactions and interactions worth replaying.</p>
+        <div class="deco gift-burst" aria-hidden="true"><i style="--tx:22px;--ty:-26px"></i><i style="--tx:-20px;--ty:-28px"></i><i style="--tx:28px;--ty:-12px"></i><i style="--tx:-26px;--ty:-14px"></i></div>
+      </article>
+
+      <article class="b-card c-compete rv" style="transition-delay:.16s">
+        <span class="num">/ 05</span>
+        <div class="ic"><svg><use href="#i-trophy"/></svg></div>
+        <h4>Compete</h4>
+        <p>Bring your game face. Bragging rights are on the table.</p>
+        <div class="deco" style="color:var(--yellow);display:flex;gap:6px" aria-hidden="true"><svg style="width:16px;height:16px"><use href="#i-star"/></svg><svg style="width:16px;height:16px"><use href="#i-star"/></svg><svg style="width:16px;height:16px"><use href="#i-star"/></svg></div>
+      </article>
+
+      <article class="b-card c-vibes rv">
+        <div class="vibes-orb" aria-hidden="true"></div>
+        <div>
+          <span class="num" style="position:static">/ 06</span>
+          <h4 style="margin-top:6px">Vibes</h4>
+          <p style="max-width:60ch">The room has its own personality — somewhere between a family group chat and a stadium. You'll feel it the moment you land.</p>
+        </div>
+      </article>
+    </div>
+    <p class="experience-note rv"><svg><use href="#i-spark"/></svg> Concepts from the room's world — the actual experience lives inside Yalla Ludo.</p>
+  </div>
+</section>
+
+<!-- ============ 05 · HIGHLIGHTS ============ -->
+<section id="highlights" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="kicker">05 · Highlights</span>
+      <h2 class="sec-title">Room Highlights</h2>
+      <p class="sec-sub">The essentials, on record. No fluff, no fake numbers — just the facts that matter.</p>
+    </div>
+
+    <div class="hl-wrap rv">
+      <div class="hl-grid">
+        <div class="hl-row">
+          <span class="k"><svg><use href="#i-dice"/></svg> Room ID</span>
+          <span class="v"><span data-scramble data-bind="roomId">21178301040</span>
+            <button class="copy-btn" data-copy="21178301040" data-label="Room ID" aria-label="Copy Room ID"><svg><use href="#i-copy"/></svg></button>
+          </span>
+        </div>
+        <div class="hl-row">
+          <span class="k"><svg><use href="#i-crown"/></svg> Room Owner</span>
+          <span class="v"><span data-scramble data-bind="ownerId">1143467181D</span></span>
+        </div>
+        <div class="hl-row">
+          <span class="k"><svg><use href="#i-shield"/></svg> Deputy Owner</span>
+          <span class="v"><span data-scramble data-bind="deputyId">29020089491</span></span>
+        </div>
+        <div class="hl-row">
+          <span class="k"><svg><use href="#i-spark"/></svg> Room Status</span>
+          <span class="v live"><span class="dot"></span> ACTIVE COMMUNITY</span>
+        </div>
+        <div class="hl-row">
+          <span class="k"><svg><use href="#i-chat"/></svg> Room Type</span>
+          <span class="v">SOCIAL / GAME</span>
+        </div>
+        <div class="hl-row">
+          <span class="k"><svg><use href="#i-heart"/></svg> Identity</span>
+          <span class="v gold" data-scramble data-bind="roomName">THARKI WORLD</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 · FEATURED ============ -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="featured rv rv-sc">
+      <div class="beam" aria-hidden="true"></div>
+      <div class="f-stars" aria-hidden="true">
+        <i style="top:16%;left:12%;font-size:12px">✦</i>
+        <i style="top:28%;right:14%;font-size:16px;animation-delay:.8s">✦</i>
+        <i style="bottom:22%;left:20%;font-size:10px;animation-delay:1.6s">✦</i>
+        <i style="bottom:30%;right:22%;font-size:13px;animation-delay:2.2s">✦</i>
+      </div>
+      <div class="f-crown"><svg><use href="#i-crown"/></svg></div>
+      <span class="f-kick">Featured Room</span>
+      <h3 class="f-name" data-bind="roomName">THARKI WORLD</h3>
+      <p class="f-quote">"Currently being showcased among our favourite room experiences."</p>
+      <div class="laurel" aria-hidden="true">
+        <svg style="transform:scaleX(-1)"><use href="#i-star"/></svg>
+        <svg><use href="#i-trophy"/></svg>
+        <svg><use href="#i-star"/></svg>
+      </div>
+      <p class="f-fine">A pick from the room's own spotlight — not an official ranking.</p>
+    </div>
+  </div>
+</section>
+
+<div class="sec-divider" aria-hidden="true"><span>✦ ✦ ✦</span></div>
+
+<!-- ============ 07 · COMMUNITY WALL + CHAT ============ -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="kicker">06 · Voices</span>
+      <h2 class="sec-title">From The Room <span class="demo-chip"><i></i> Demo Vibes</span></h2>
+      <p class="sec-sub">A taste of the room's language. Sample messages in the spirit of THARKI WORLD.</p>
+    </div>
+
+    <div class="wall">
+      <article class="w-card rv" style="--rot:-1.6deg">
+        <p>"Room mein entry aur vibe dono next level 🔥"</p>
+        <div class="w-who"><i style="background:var(--red)">P1</i><small>@player_one</small></div>
+      </article>
+      <article class="w-card rv" style="--rot:1.4deg;transition-delay:.07s">
+        <p>"THARKI WORLD ka alag hi scene hai."</p>
+        <div class="w-who"><i style="background:var(--gold)">P2</i><small>@player_two</small></div>
+      </article>
+      <article class="w-card rv" style="--rot:-1deg;transition-delay:.14s">
+        <p>"Game start hone se pehle hi chat start 😂"</p>
+        <div class="w-who"><i style="background:var(--green)">P3</i><small>@player_three</small></div>
+      </article>
+      <article class="w-card rv" style="--rot:1.8deg;transition-delay:.21s">
+        <p>"Yahan boring rehna mushkil hai."</p>
+        <div class="w-who"><i style="background:var(--blue)">P4</i><small>@player_four</small></div>
+      </article>
+      <article class="w-card rv" style="--rot:-2deg;transition-delay:.28s">
+        <p>"Dice bhi yahan attitude ke saath chalta hai 🎲"</p>
+        <div class="w-who"><i style="background:#E98BBB">P5</i><small>@player_five</small></div>
+      </article>
+      <article class="w-card rv" style="--rot:1.2deg;transition-delay:.35s">
+        <p>"Ek match, chaar kahaniyan. Har baar."</p>
+        <div class="w-who"><i style="background:var(--yellow)">P6</i><small>@player_six</small></div>
+      </article>
+    </div>
+
+    <!-- chat -->
+    <div class="chat-grid">
+      <div class="chat-copy rv rv-l">
+        <span class="kicker" style="margin-bottom:14px">Room Chat · Preview</span>
+        <h3>The chat never really sleeps.</h3>
+        <p>This is a decorative preview of how the room feels in full flow — a stylised mock, not a live feed. The real conversation is one Room ID away.</p>
+        <div class="id-chip" style="margin-top:22px">
+          <span class="lbl">Room ID</span>
+          <span class="val mono" data-bind="roomId">21178301040</span>
+          <button class="copy-btn" data-copy="21178301040" data-label="Room ID" aria-label="Copy Room ID"><svg><use href="#i-copy"/></svg></button>
+        </div>
+      </div>
+
+      <div class="chat-panel rv rv-r" id="chatPanel" aria-label="Demo chat preview">
+        <div class="chat-head">
+          <div class="mini-emb">TW</div>
+          <div><b data-bind="roomName">THARKI WORLD</b><small><i></i> Community Chat · Demo</small></div>
+        </div>
+        <div class="chat-body">
+          <div class="msg"><span class="av" style="background:var(--red)">A</span><div class="bub"><small>User A</small><span>Who's playing tonight?</span></div></div>
+          <div class="msg"><span class="av" style="background:var(--gold)">B</span><div class="bub"><small>User B</small><span>I'm ready 🎲</span></div></div>
+          <div class="msg"><span class="av" style="background:var(--green)">C</span><div class="bub"><small>User C</small><span>Room already full vibes 😂</span></div></div>
+          <div class="msg"><span class="av" style="background:var(--red)">A</span><div class="bub"><small>User A</small><span>Winner gets bragging rights for a week.</span></div></div>
+          <div class="msg typing"><span class="av" style="background:var(--blue)">B</span><div class="bub"><i></i><i></i><i></i></div></div>
+        </div>
+        <div class="chat-input">
+          <span class="fake">Say something nice… (demo)</span>
+          <span class="send"><svg><use href="#i-send"/></svg></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 08 · SPOTLIGHT ============ -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="kicker">07 · Players</span>
+      <h2 class="sec-title">Room Spotlight <span class="demo-chip"><i></i> Demo Cards</span></h2>
+      <p class="sec-sub">Every room has its characters. These placeholder cards are ready for the real legends.</p>
+    </div>
+
+    <div class="spot-grid">
+      <article class="sp-card rv" style="--pc:var(--red)">
+        <div class="sp-av"><svg><use href="#i-pawn"/></svg></div>
+        <h5>Player One</h5><span class="sp-role">The Comeback Kid</span>
+        <p>Loses the first two tokens on purpose. Allegedly.</p>
+        <span class="sp-badge"><svg><use href="#i-star"/></svg> Top Vibes</span>
+      </article>
+      <article class="sp-card rv" style="--pc:var(--gold);transition-delay:.07s">
+        <div class="sp-av"><svg><use href="#i-pawn"/></svg></div>
+        <h5>Player Two</h5><span class="sp-role">Voice of the Room</span>
+        <p>Commentates every match like it's a world final.</p>
+        <span class="sp-badge"><svg><use href="#i-mic"/></svg> Mic Legend</span>
+      </article>
+      <article class="sp-card rv" style="--pc:var(--green);transition-delay:.14s">
+        <div class="sp-av"><svg><use href="#i-pawn"/></svg></div>
+        <h5>Player Three</h5><span class="sp-role">Lucky Roller</span>
+        <p>Rolls a six exactly when it hurts you the most.</p>
+        <span class="sp-badge"><svg><use href="#i-dice"/></svg> Dice Favourite</span>
+      </article>
+      <article class="sp-card rv" style="--pc:var(--blue);transition-delay:.21s">
+        <div class="sp-av"><svg><use href="#i-pawn"/></svg></div>
+        <h5>Player Four</h5><span class="sp-role">Quiet Destroyer</span>
+        <p>Says nothing. Wins everything. Logs off.</p>
+        <span class="sp-badge"><svg><use href="#i-trophy"/></svg> Silent Storm</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 09 · GAME ENERGY ============ -->
+<section class="energy" id="energy">
+  <div class="wrap energy-in">
+    <div class="sec-head rv" style="margin-bottom:clamp(28px,4vw,44px)">
+      <span class="kicker" style="justify-content:center">08 · Game Energy</span>
+    </div>
+
+    <div class="dice-row rv" aria-hidden="true">
+      <!-- die face 5 -->
+      <svg viewBox="0 0 64 64" style="transform:rotate(-8deg)"><rect x="2" y="2" width="60" height="60" rx="14" fill="#F7EFDC" stroke="#B49B6C" stroke-width="2"/><circle cx="19" cy="19" r="5" fill="#241A0C"/><circle cx="45" cy="19" r="5" fill="#241A0C"/><circle cx="32" cy="32" r="5" fill="#241A0C"/><circle cx="19" cy="45" r="5" fill="#241A0C"/><circle cx="45" cy="45" r="5" fill="#241A0C"/></svg>
+      <!-- die face 6 -->
+      <svg viewBox="0 0 64 64"><rect x="2" y="2" width="60" height="60" rx="14" fill="#F7EFDC" stroke="#B49B6C" stroke-width="2"/><circle cx="19" cy="16" r="5" fill="#241A0C"/><circle cx="45" cy="16" r="5" fill="#241A0C"/><circle cx="19" cy="32" r="5" fill="#241A0C"/><circle cx="45" cy="32" r="5" fill="#241A0C"/><circle cx="19" cy="48" r="5" fill="#241A0C"/><circle cx="45" cy="48" r="5" fill="#241A0C"/></svg>
+      <!-- die face 3 -->
+      <svg viewBox="0 0 64 64" style="transform:rotate(9deg)"><rect x="2" y="2" width="60" height="60" rx="14" fill="#F7EFDC" stroke="#B49B6C" stroke-width="2"/><circle cx="19" cy="19" r="5" fill="#241A0C"/><circle cx="32" cy="32" r="5" fill="#241A0C"/><circle cx="45" cy="45" r="5" fill="#241A0C"/></svg>
+    </div>
+
+    <div class="energy-words rv">
+      <b class="w1">Roll.</b><span class="sep">✦</span><b class="w2">Play.</b><span class="sep">✦</span><b class="w3">Laugh.</b><span class="sep">✦</span><b class="w4">Repeat.</b>
+    </div>
+
+    <div class="lane-wrap rv" aria-hidden="true">
+      <div class="lane-line"></div>
+      <span class="lane-cell" style="left:12%"></span><span class="lane-cell" style="left:31%"></span><span class="lane-cell" style="left:50%"></span><span class="lane-cell" style="left:69%"></span><span class="lane-cell" style="left:88%"></span>
+      <span class="lane-pawn" style="animation-duration:14s;color:var(--red)"><svg><use href="#i-pawn"/></svg></span>
+      <span class="lane-pawn" style="animation-duration:17s;animation-delay:-5s;color:var(--gold)"><svg><use href="#i-pawn"/></svg></span>
+      <span class="lane-pawn" style="animation-duration:20s;animation-delay:-9s;color:var(--green)"><svg><use href="#i-pawn"/></svg></span>
+      <span class="lane-pawn" style="animation-duration:15.5s;animation-delay:-12s;color:var(--blue)"><svg><use href="#i-pawn"/></svg></span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10 · RULES ============ -->
+<section id="rules">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="kicker">09 · House Rules</span>
+      <h2 class="sec-title">THARKI WORLD Rules</h2>
+      <p class="sec-sub">Five rules. That's the whole constitution.</p>
+    </div>
+    <div class="rules-list">
+      <div class="rule rv"><span class="no">01</span><div><h5>Respect the room.</h5><p>Everyone gets a seat at the table — new face or old friend.</p></div></div>
+      <div class="rule rv"><span class="no">02</span><div><h5>Keep the vibes positive.</h5><p>Good energy in, good energy out. It's that simple.</p></div></div>
+      <div class="rule rv"><span class="no">03</span><div><h5>Play fair.</h5><p>The dice decide. Not drama, not excuses.</p></div></div>
+      <div class="rule rv"><span class="no">04</span><div><h5>No unnecessary drama.</h5><p>Leave it at the door. The room has better things to do.</p></div></div>
+      <div class="rule rv"><span class="no">05</span><div><h5>Enjoy the game.</h5><p>That's the whole point. That's always been the point.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11 · INVITE / FINAL CTA ============ -->
+<section id="invite" style="padding-top:0">
+  <div class="wrap">
+    <div class="invite-panel rv rv-sc">
+      <div class="f-stars" aria-hidden="true">
+        <i style="top:14%;left:9%;font-size:12px">✦</i>
+        <i style="top:22%;right:11%;font-size:15px;animation-delay:1s">✦</i>
+        <i style="bottom:18%;left:16%;font-size:10px;animation-delay:1.8s">✦</i>
+        <i style="bottom:26%;right:18%;font-size:12px;animation-delay:2.4s">✦</i>
+      </div>
+      <span class="invite-kick">You're Invited</span>
+      <h2 class="invite-title">Ready to enter <em data-bind="roomName">THARKI WORLD</em>?</h2>
+      <p class="invite-sub">Whether you came for the game, the chat, the chaos or simple curiosity — welcome. The table is set and there's always one more seat.</p>
+      <div class="invite-id">
+        <div class="id-chip">
+          <span class="lbl">Room ID</span>
+          <span class="val mono" data-bind="roomId">21178301040</span>
+          <button class="copy-btn" data-copy="21178301040" data-label="Room ID" aria-label="Copy Room ID"><svg><use href="#i-copy"/></svg></button>
+        </div>
+      </div>
+      <div class="invite-ctas">
+        <a href="#invite" class="btn btn-gold" data-enter><svg><use href="#i-arrow"/></svg> Enter THARKI WORLD</a>
+        <button class="btn btn-ghost" data-copy="21178301040" data-label="Room ID"><svg><use href="#i-copy"/></svg> Copy Room ID</button>
+      </div>
+      <div class="invite-help"><span><b>Open Yalla Ludo</b></span><span>→</span><span><b>Find Room</b></span><span>→</span><span><b>Paste the Room ID</b></span></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-word rv" aria-hidden="true">THARKI WORLD</div>
+    <div class="foot-grid">
+      <div class="foot-brand rv">
+        <a class="brand" href="#home">
+          <span class="brand-mark"><b>TW</b></span>
+          <span class="brand-txt"><b>THARKI WORLD</b><small>Room Community</small></span>
+        </a>
+        <p>A community-made room experience. Built for the THARKI WORLD community — by the community, for the game.</p>
+        <div class="foot-tag"><span class="tag-mini">Fan-Made Room Experience</span></div>
+      </div>
+      <div class="foot-col rv" style="transition-delay:.08s">
+        <h6>Room Records</h6>
+        <div class="foot-row"><svg><use href="#i-dice"/></svg> <span data-bind="roomId">21178301040</span>
+          <button class="copy-btn" data-copy="21178301040" data-label="Room ID" aria-label="Copy Room ID"><svg><use href="#i-copy"/></svg></button></div>
+        <div class="foot-row"><svg><use href="#i-crown"/></svg> <span data-bind="ownerId">1143467181D</span>
+          <button class="copy-btn" data-copy="1143467181D" data-label="Owner ID" aria-label="Copy Owner ID"><svg><use href="#i-copy"/></svg></button></div>
+        <div class="foot-row"><svg><use href="#i-shield"/></svg> <span data-bind="deputyId">29020089491</span>
+          <button class="copy-btn" data-copy="29020089491" data-label="Deputy Owner ID" aria-label="Copy Deputy Owner ID"><svg><use href="#i-copy"/></svg></button></div>
+      </div>
+      <div class="foot-col rv" style="transition-delay:.16s">
+        <h6>The Room</h6>
+        <div class="foot-row"><svg><use href="#i-heart"/></svg> Built for the THARKI WORLD community.</div>
+        <div class="foot-row"><svg><use href="#i-spark"/></svg> Where the game begins. Where the people stay.</div>
+        <div class="foot-row"><svg><use href="#i-star"/></svg> Status: active community.</div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <small>© 2026 THARKI WORLD · Community Room</small>
+      <span class="disclaimer">Independent fan / community project. Not affiliated with, endorsed by, or operated by Yalla Ludo.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- toast -->
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <svg><use href="#i-check"/></svg> <span id="toastMsg">Room ID copied!</span>
+</div>
+
+<script>
+/* ============================================================
+   ★ EDIT YOUR ROOM DATA HERE — single source of truth ★
+   Change these values once; the whole page updates.
+   ============================================================ */
+const ROOM = {
+  ROOM_NAME    : 'THARKI WORLD',
+  ROOM_ID      : '21178301040',
+  OWNER_ID     : '1143467181D',
+  DEPUTY_ID    : '29020089491',
+  ENTER_URL    : ''   // put your Yalla Ludo room deep-link here later; empty = scrolls to invite
+};
+
+const RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const FINE_POINTER = window.matchMedia('(pointer: fine)').matches;
+
+/* ---------- hydrate bound data ---------- */
+(function hydrate(){
+  const map = { roomName: ROOM.ROOM_NAME, roomId: ROOM.ROOM_ID, ownerId: ROOM.OWNER_ID, deputyId: ROOM.DEPUTY_ID };
+  document.querySelectorAll('[data-bind]').forEach(el => { if (map[el.dataset.bind]) el.textContent = map[el.dataset.bind]; });
+  document.querySelectorAll('[data-copy]').forEach(el => el.dataset.copy = ({roomId:ROOM.ROOM_ID,ownerId:ROOM.OWNER_ID,deputyId:ROOM.DEPUTY_ID})[el.dataset.copy] || el.dataset.copy);
+  if (ROOM.ENTER_URL){ document.querySelectorAll('[data-enter]').forEach(a => a.href = ROOM.ENTER_URL); }
+})();
+
+/* ---------- preloader ---------- */
+(function preloader(){
+  const loader = document.getElementById('loader');
+  if (!loader) return;
+  const name = document.getElementById('ldrName');
+  ROOM.ROOM_NAME.split('').forEach((ch,i)=>{
+    const s = document.createElement('span');
+    s.textContent = ch === ' ' ? '\u00A0' : ch;
+    s.style.setProperty('--i', i);
+    name.appendChild(s);
+  });
+  const finish = () => { loader.classList.add('done'); setTimeout(()=>loader.remove(), 700); startHero(); };
+  if (RM){ finish(); } else { setTimeout(finish, 1550); }
+})();
+
+/* ---------- scramble decode ---------- */
+function scramble(el, charset, dur=900){
+  const final = el.dataset.text || el.textContent;
+  el.dataset.text = final;
+  if (RM){ el.textContent = final; return; }
+  const n = final.length, t0 = performance.now();
+  (function frame(t){
+    const p = Math.min(1,(t-t0)/dur), k = Math.floor(p*n);
+    let out = '';
+    for (let i=0;i<n;i++){
+      const c = final[i];
+      out += (i<k || c===' ') ? c : charset[Math.floor(Math.random()*charset.length)];
+    }
+    el.textContent = out;
+    if (p<1) requestAnimationFrame(frame); else el.textContent = final;
+  })(t0);
+}
+const LETTERS = 'TWXKZR#★✦';
+const DIGITS  = '0123456789#';
+function startHero(){
+  const t1 = document.getElementById('ht1'), t2 = document.getElementById('ht2');
+  if (t1) scramble(t1, LETTERS, 1000);
+  if (t2) setTimeout(()=>scramble(t2, LETTERS, 1000), 220);
+}
+
+/* ---------- reveal on scroll ---------- */
+(function reveals(){
+  const els = document.querySelectorAll('.rv');
+  if (RM || !('IntersectionObserver' in window)){ els.forEach(e=>e.classList.add('in')); return; }
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(en=>{
+      if (!en.isIntersecting) return;
+      en.target.classList.add('in');
+      en.target.querySelectorAll('[data-scramble]').forEach(el=>{
+        const set = /\d/.test(el.dataset.text || el.textContent) ? DIGITS : LETTERS;
+        scramble(el, set, 800);
+      });
+      io.unobserve(en.target);
+    });
+  },{ threshold:.16, rootMargin:'0px 0px -6% 0px' });
+  els.forEach(el=>io.observe(el));
+})();
+
+/* ---------- copy + toast ---------- */
+const toast = document.getElementById('toast'), toastMsg = document.getElementById('toastMsg');
+let toastTimer;
+function showToast(msg){
+  toastMsg.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>toast.classList.remove('show'), 2400);
+}
+function copyText(text){
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    return navigator.clipboard.writeText(text).catch(()=>fallbackCopy(text));
+  }
+  return Promise.resolve(fallbackCopy(text));
+}
+function fallbackCopy(text){
+  const ta = document.createElement('textarea');
+  ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+  document.body.appendChild(ta); ta.select();
+  try { document.execCommand('copy'); } catch(e){}
+  ta.remove();
+}
+document.addEventListener('click', e=>{
+  const btn = e.target.closest('[data-copy]');
+  if (!btn) return;
+  copyText(btn.dataset.copy).then(()=>{
+    showToast((btn.dataset.label || 'ID') + ' copied!');
+    btn.classList.add('ok');
+    const svg = btn.querySelector('svg use');
+    if (svg){ svg.setAttribute('href','#i-check'); setTimeout(()=>{svg.setAttribute('href','#i-copy'); btn.classList.remove('ok');},1800); }
+  });
+});
+
+/* ---------- nav ---------- */
+(function nav(){
+  const nav = document.getElementById('nav'), bar = document.getElementById('navProgress');
+  const onScroll = () => {
+    nav.classList.toggle('scrolled', window.scrollY > 30);
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (h>0 ? (window.scrollY/h)*100 : 0) + '%';
+  };
+  window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+  const burger = document.getElementById('burger'), menu = document.getElementById('mMenu');
+  const setMenu = open => {
+    burger.classList.toggle('open', open);
+    menu.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  };
+  burger.addEventListener('click', ()=>setMenu(!menu.classList.contains('open')));
+  menu.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>setMenu(false)));
+})();
+
+/* ---------- ludo board SVG generator ---------- */
+(function buildBoard(){
+  const mount = document.getElementById('boardMount');
+  if (!mount) return;
+  const C = { red:'#B8434A', green:'#3E9E74', blue:'#4A78C9', yellow:'#D9A63E' };
+  const W = 200/3;
+  let cells = '';
+  const arm = (dx,dy,horiz,color)=>{
+    for (let r=0;r<3;r++) for (let c=0;c<6;c++){
+      let x,y;
+      if (horiz){ x = dx + c*W; y = dy + r*W; } else { x = dx + r*W; y = dy + c*W; }
+      const mid = horiz ? r===1 : c===1;
+      const inner = c>0 && c<5;
+      const fill = (mid && inner) ? color : 'rgba(244,236,221,.035)';
+      cells += `<rect x="${x+4}" y="${y+4}" width="${W-8}" height="${W-8}" rx="7" fill="${fill}" stroke="rgba(244,236,221,.1)" stroke-width="1.4"/>`;
+    }
+  };
+  arm(200, 0,   false, C.green);   // top
+  arm(400, 200, true,  C.blue);    // right
+  arm(200, 400, false, C.yellow);  // bottom
+  arm(0,   200, true,  C.red);     // left
+
+  const quad = (x,y,color)=>{
+    let holes='';
+    for (let i=0;i<3;i++) for (let j=0;j<3;j++){
+      holes += `<circle cx="${x+44+i*56}" cy="${y+44+j*56}" r="16.5" fill="rgba(10,7,16,.55)" stroke="rgba(244,236,221,.18)" stroke-width="1.4"/>`;
+    }
+    return `<rect x="${x+12}" y="${y+12}" width="176" height="176" rx="22" fill="${color}" opacity=".9"/><rect x="${x+24}" y="${y+24}" width="152" height="152" rx="16" fill="rgba(10,7,16,.28)"/>${holes}`;
+  };
+
+  const pawn = (x,y,color)=>`<g transform="translate(${x-17},${y-23}) scale(1.45)" style="filter:drop-shadow(0 4px 5px rgba(0,0,0,.5))"><use href="#i-pawn" color="${color}"/></g>`;
+
+  mount.innerHTML = `<svg class="board-svg" viewBox="0 0 600 600" aria-hidden="true">
+    <rect x="5" y="5" width="590" height="590" rx="36" fill="#150E22" stroke="rgba(231,180,90,.4)" stroke-width="2.5"/>
+    ${cells}
+    ${quad(0,0,C.red)}${quad(400,0,C.green)}${quad(400,400,C.blue)}${quad(0,400,C.yellow)}
+    <path d="M200 200 L300 300 L200 400 Z" fill="${C.red}"/>
+    <path d="M200 200 L300 300 L400 200 Z" fill="${C.green}"/>
+    <path d="M400 200 L300 300 L400 400 Z" fill="${C.blue}"/>
+    <path d="M200 400 L300 300 L400 400 Z" fill="${C.yellow}"/>
+    <circle cx="300" cy="300" r="30" fill="#150E22" stroke="rgba(231,180,90,.6)" stroke-width="2"/>
+    <text x="300" y="309" text-anchor="middle" font-size="24" fill="#E7B45A" font-family="serif">✦</text>
+    ${pawn(100,300,'#E0504E')}${pawn(300,100,'#3FB984')}${pawn(500,300,'#5B8DEF')}${pawn(300,500,'#EDC24C')}
+    ${pawn(100,100,'#E0504E')}${pawn(500,100,'#3FB984')}
+  </svg>`;
+})();
+
+/* ---------- hero particles ---------- */
+(function particles(){
+  if (RM) return;
+  const box = document.getElementById('heroParticles');
+  const colors = ['rgba(231,180,90,.8)','rgba(224,80,78,.7)','rgba(63,185,132,.7)','rgba(91,141,239,.7)','rgba(244,236,221,.6)'];
+  for (let i=0;i<26;i++){
+    const p = document.createElement('i');
+    const s = 2 + Math.random()*3;
+    p.style.cssText = `left:${Math.random()*100}%;top:${55+Math.random()*45}%;width:${s}px;height:${s}px;background:${colors[i%colors.length]};--o:${.3+Math.random()*.5};animation-duration:${9+Math.random()*14}s;animation-delay:-${Math.random()*18}s;box-shadow:0 0 ${s*3}px currentColor`;
+    box.appendChild(p);
+  }
+})();
+
+/* ---------- board tilt ---------- */
+(function tilt(){
+  if (RM || !FINE_POINTER) return;
+  const stage = document.getElementById('boardStage'), hero = document.querySelector('.hero');
+  let tx=0, ty=0, cx=0, cy=0, raf=null;
+  const loop = () => {
+    cx += (tx-cx)*.07; cy += (ty-cy)*.07;
+    stage.style.transform = `rotateX(${cy}deg) rotateY(${cx}deg)`;
+    if (Math.abs(tx-cx)>.01 || Math.abs(ty-cy)>.01) raf = requestAnimationFrame(loop); else raf = null;
+  };
+  hero.addEventListener('mousemove', e=>{
+    const r = hero.getBoundingClientRect();
+    tx = ((e.clientX-r.left)/r.width - .5) * 14;
+    ty = -((e.clientY-r.top)/r.height - .5) * 12;
+    if (!raf) raf = requestAnimationFrame(loop);
+  });
+  hero.addEventListener('mouseleave', ()=>{ tx=0; ty=0; if(!raf) raf=requestAnimationFrame(loop); });
+})();
+
+/* ---------- custom cursor ---------- */
+(function cursor(){
+  if (RM || !FINE_POINTER) return;
+  document.body.classList.add('has-cursor');
+  const dot = document.querySelector('.cur-dot'), ring = document.querySelector('.cur-ring');
+  let mx=innerWidth/2, my=innerHeight/2, rx=mx, ry=my;
+  addEventListener('mousemove', e=>{
+    mx=e.clientX; my=e.clientY;
+    dot.style.left=mx+'px'; dot.style.top=my+'px';
+  });
+  (function loop(){
+    rx += (mx-rx)*.16; ry += (my-ry)*.16;
+    ring.style.left=rx+'px'; ring.style.top=ry+'px';
+    requestAnimationFrame(loop);
+  })();
+  document.addEventListener('mouseover', e=>{
+    ring.classList.toggle('big', !!e.target.closest('a,button,[data-copy],.w-card,.sp-card,.b-card'));
+  });
+  document.addEventListener('mouseleave', ()=>{ dot.style.opacity=0; ring.style.opacity=0; });
+  document.addEventListener('mouseenter', ()=>{ dot.style.opacity=1; ring.style.opacity=1; });
+})();
+</script>
+</body>
+</html>
